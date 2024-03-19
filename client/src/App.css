@@ -28,6 +28,36 @@
   color: #61dafb;
 }
 
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(230,230,230);
+}
+
+.selection-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.selection-container p {
+  font-size: large;
+}
+
+.type-button {
+  background-color: rgb(20,20,100);
+  color: white;
+  padding: 10px 20px;
+  font-size: 20px;
+  width: 200px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
