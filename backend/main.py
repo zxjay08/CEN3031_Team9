@@ -198,7 +198,7 @@ def getRewarded(studentid):
             "ID": row[0],
             "Name": row[1],
             "Cost": float(row[2]),
-            "Reward Date": row[3].strftime("%D")
+            "Reward Date": row[3].strftime("%Y-%m-%d")
         } for row in result
     ]
     return formatted_result
@@ -212,9 +212,8 @@ def addGrade(studentid, assignmentid, grade, completedate):
         id = 1
     else:
         id = int(result[0]) + 1
-
     query = "INSERT INTO Grades VALUES ("
-    query += str(id),
+    query += str(id)
     query += ", "
     query += str(studentid)
     query += ", "
@@ -258,7 +257,29 @@ def getScholarships():
             scholarships.append(getRewarded(student["ID"]))
     return scholarships
 
+def getStudentsRewardedPerYear():
+    perYear = {}
+    scholarships = getScholarships()
+    for student in scholarships:
+            for row in student:
+                year = row["Reward Date"][0:4]
+                if year in perYear.keys():
+                    perYear[year] += 1
+                else:
+                    perYear[year] = 1
+    return perYear
 
+def getScholarshipCostPerYear():
+    perYear = {}
+    scholarships = getScholarships()
+    for student in scholarships:
+            for row in student:
+                year = row["Reward Date"][0:4]
+                if year in perYear.keys():
+                    perYear[year] += row["Cost"]
+                else:
+                    perYear[year] = row["Cost"]
+    return perYear
 
 
 #testing
@@ -277,7 +298,7 @@ result = getIncentive(1)
 for value in result:
     print(value)
 
-#addReward(3, 2, "2024-04-18")
+addReward(2, 2, "2023-04-18")
 #result = getRewarded(5)
 #for value in result:
 #    print(value)
@@ -290,4 +311,7 @@ for value in result:
 result = getScholarships()
 for value in result:
     print(value)
+
+print(getStudentsRewardedPerYear())
+print(getScholarshipCostPerYear())
 connection.close()
