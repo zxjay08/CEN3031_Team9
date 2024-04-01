@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import oracledb
+import datetime
 
 app = FastAPI()
 
@@ -121,7 +122,7 @@ def getAssignment(id):
         {
             "ID": row[0],
             "Name": row[1],
-            "Due Date": row[2].strftime("%D"),
+            "Due Date": row[2].strftime("%Y-%m-%d"),
         } for row in result
     ]
     return formatted_result
@@ -242,7 +243,7 @@ def getGrades(studentid):
             "Name": row[1],
             "Assignment": row[2],
             "Grade": float(row[3]),
-            "Complete Date": row[4].strftime("%D")
+            "Complete Date": row[4].strftime("%Y-%m-%d")
         } for row in result
     ]
     return formatted_result
@@ -254,7 +255,7 @@ def getScholarships():
     for student in studentsList:
         rewarded = getRewarded(student["ID"])
         if (len(rewarded) > 0):
-            scholarships.append(getRewarded(student["ID"]))
+            scholarships.append(rewarded)
     return scholarships
 
 def getStudentsRewardedPerYear():
@@ -281,6 +282,36 @@ def getScholarshipCostPerYear():
                     perYear[year] = row["Cost"]
     return perYear
 
+#Calculates gpa per month for specific student
+def calculateMonthlyGPAs(studentid):
+    query = """SELECT studentID, extract(year from completedate), extract(month from completedate), AVG(grade)
+    FROM GRADES
+    WHERE studentID = """
+    query += str(studentid)
+    query += """ GROUP BY studentID, extract(year from completedate), extract(month from completedate)"""
+    cursor.execute(query)
+    result = cursor.fetchall()
+    perSemester = {}
+
+    formatted_result = [
+        {
+            "StudentID": row[0],
+            "Year": row[1],
+            "Month": row[2],
+            "GPA": float(row[3]),
+        } for row in result
+    ]
+
+    return formatted_result
+
+def calculateAllStudentGPAs():
+    gpas = []
+    studentsList = getStudents();
+    for student in studentsList:
+        rewarded = calculateMonthlyGPAs(student["ID"])
+        if (len(rewarded) > 0):
+            gpas.append(rewarded)
+    return gpas
 
 #testing
 #addUser("example4Teacher@gmail.com", "password", 2)
@@ -298,12 +329,14 @@ result = getIncentive(1)
 for value in result:
     print(value)
 
-addReward(2, 2, "2023-04-18")
+#addReward(2, 2, "2023-04-18")
 #result = getRewarded(5)
 #for value in result:
 #    print(value)
 
-#addGrade(1, 1, 90.7, "2024-04-17")
+#addGrade(1, 1, 85, "2024-04-05")
+#addGrade(2, 1, 100, "2024-04-15")
+#addGrade(1, 1, 95, "2024-03-14")
 result = getGrades(1)
 for value in result:
     print(value)
@@ -314,4 +347,7 @@ for value in result:
 
 print(getStudentsRewardedPerYear())
 print(getScholarshipCostPerYear())
+print(calculateMonthlyGPAs(1))
+print(calculateAllStudentGPAs())
+
 connection.close()
