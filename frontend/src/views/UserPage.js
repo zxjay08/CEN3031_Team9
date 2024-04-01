@@ -51,9 +51,7 @@ function User() {
                       <FormGroup>
                         <label>Major</label>
                         <Input
-                          defaultValue="Creative Code Inc."
-                          disabled
-                          placeholder="Company"
+                            placeholder="Major"
                           type="text"
                         />
                       </FormGroup>
@@ -62,7 +60,6 @@ function User() {
                       <FormGroup>
                         <label>Username</label>
                         <Input
-                          defaultValue="michael23"
                           placeholder="Username"
                           type="text"
                         />
@@ -82,8 +79,7 @@ function User() {
                       <FormGroup>
                         <label>First Name</label>
                         <Input
-                          defaultValue="Mike"
-                          placeholder="Company"
+                          placeholder="Class Name"
                           type="text"
                         />
                       </FormGroup>
@@ -92,7 +88,6 @@ function User() {
                       <FormGroup>
                         <label>Last Name</label>
                         <Input
-                          defaultValue="Andrew"
                           placeholder="Last Name"
                           type="text"
                         />
@@ -104,7 +99,6 @@ function User() {
                       <FormGroup>
                         <label>Address</label>
                         <Input
-                          defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
                           placeholder="Home Address"
                           type="text"
                         />
@@ -116,7 +110,6 @@ function User() {
                       <FormGroup>
                         <label>City</label>
                         <Input
-                          defaultValue="Mike"
                           placeholder="City"
                           type="text"
                         />
@@ -126,7 +119,6 @@ function User() {
                       <FormGroup>
                         <label>Country</label>
                         <Input
-                          defaultValue="Andrew"
                           placeholder="Country"
                           type="text"
                         />
@@ -145,9 +137,7 @@ function User() {
                         <label>About Student</label>
                         <Input
                           cols="80"
-                          defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-                            that two seat Lambo."
-                          placeholder="Here can be your description"
+                          placeholder="Description"
                           rows="4"
                           type="textarea"
                         />
@@ -156,61 +146,6 @@ function User() {
                   </Row>
                 </Form>
               </CardBody>
-            </Card>
-          </Col>
-          <Col md="4">
-            <Card className="card-user">
-              <div className="image">
-                <img alt="..." src={require("assets/img/bg5.jpg").default} />
-              </div>
-              <CardBody>
-                <div className="author">
-                  <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    <img
-                      alt="..."
-                      className="avatar border-gray"
-                      src={require("assets/img/mike.jpg").default}
-                    />
-                    <h5 className="title">Mike Andrew</h5>
-                  </a>
-                  <p className="description">michael24</p>
-                </div>
-                <p className="description text-center">
-                  "Lamborghini Mercy <br />
-                  Your chick she so thirsty <br />
-                  I'm in that two seat Lambo"
-                </p>
-              </CardBody>
-              <hr />
-              <div className="button-container">
-                <Button
-                  className="btn-neutral btn-icon btn-round"
-                  color="default"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  size="lg"
-                >
-                  <i className="fab fa-facebook-f" />
-                </Button>
-                <Button
-                  className="btn-neutral btn-icon btn-round"
-                  color="default"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  size="lg"
-                >
-                  <i className="fab fa-twitter" />
-                </Button>
-                <Button
-                  className="btn-neutral btn-icon btn-round"
-                  color="default"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  size="lg"
-                >
-                  <i className="fab fa-google-plus-g" />
-                </Button>
-              </div>
             </Card>
           </Col>
         </Row>
