@@ -127,6 +127,21 @@ def getAssignment(id):
     ]
     return formatted_result
 
+def getAssignments():
+    query = "SELECT * FROM Assignments"
+    cursor.execute(query)
+    result = cursor.fetchall()
+
+    formatted_result = [
+        {
+            "ID": row[0],
+            "Name": row[1],
+            "Due Date": row[2].strftime("%Y-%m-%d"),
+        } for row in result
+    ]
+    return formatted_result
+
+
 def addIncentive(name, cost):
     #first, get number of rows to determine next ID
     query = "SELECT MAX(incentiveID) FROM Incentives"
@@ -150,6 +165,20 @@ def addIncentive(name, cost):
 def getIncentive(id):
     query = "SELECT * FROM Incentives WHERE incentiveID = "
     query += str(id)
+    cursor.execute(query)
+    result = cursor.fetchall()
+
+    formatted_result = [
+        {
+            "ID": row[0],
+            "Name": row[1],
+            "Cost": float(row[2]),
+        } for row in result
+    ]
+    return formatted_result
+
+def getIncentives():
+    query = "SELECT * FROM Incentives"
     cursor.execute(query)
     result = cursor.fetchall()
 
