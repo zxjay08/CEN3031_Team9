@@ -19,6 +19,7 @@ function App() {
     }
   }
 
+
   useEffect(() => {
     function drawChart() {
       if (trends.length > 0) {
