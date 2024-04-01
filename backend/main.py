@@ -35,7 +35,18 @@ print("Successfully connected to Oracle Database")
 #User Types: 1-Student 2-Teacher 3-Parent 4-Advisor 5-Admin
 
 def addUser(email, password, typeid):
-    query = "INSERT INTO USERS (email, password, typeid) VALUES ('"
+    #first, get number of rows to determine next ID
+    query = "SELECT MAX(userID) FROM USERS"
+    cursor.execute(query)
+    result = cursor.fetchone()
+    if result[0] is None:
+        id = 1
+    else:
+        id = int(result[0]) + 1
+
+    query = "INSERT INTO USERS VALUES ("
+    query += str(id)
+    query += ", '"
     query += email
     query += "', '"
     query += password
@@ -48,8 +59,25 @@ def addUser(email, password, typeid):
 
 def getUser(id):
     query = """
-    SELECT * FROM USERS WHERE ID = """
+    SELECT * FROM USERS WHERE userID = """
     query += str(id)
+    cursor.execute(query)
+    result = cursor.fetchall()
+
+
+    formatted_result = [
+        {
+            "ID": row[0],
+            "Email": row[1],
+            "Password": row[2],
+            "Type": row[3],
+        } for row in result
+    ]
+    return formatted_result
+
+def getStudents():
+    query = """
+    SELECT * FROM USERS WHERE TypeID = 1"""
     cursor.execute(query)
     result = cursor.fetchall()
 
@@ -64,16 +92,27 @@ def getUser(id):
     return formatted_result
 
 def addAssignment(name, dueDate): #format: YYYY-MM-DD
-    query = "INSERT INTO Assignments (name, duedate) VALUES ("
+    #first, get number of rows to determine next ID
+    query = "SELECT MAX(assignmentID) FROM Assignments"
+    cursor.execute(query)
+    result = cursor.fetchone()
+    if result[0] is None:
+        id = 1
+    else:
+        id = int(result[0]) + 1
+
+    query = "INSERT INTO Assignments VALUES ("
+    query += str(id)
+    query += ", '"
     query += name
-    query += ", TO_DATE("
+    query += "', TO_DATE('"
     query += dueDate
-    query += ", 'YYYY-MM-DD'))"
+    query += "', 'YYYY-MM-DD'))"
     cursor.execute(query)
     connection.commit()
 
 def getAssignment(id):
-    query = "SELECT * FROM Assignments WHERE ID = "
+    query = "SELECT * FROM Assignments WHERE assignmentID = "
     query += str(id)
     cursor.execute(query)
     result = cursor.fetchall()
@@ -88,7 +127,18 @@ def getAssignment(id):
     return formatted_result
 
 def addIncentive(name, cost):
-    query = "INSERT INTO Incentives (name, cost) VALUES ('"
+    #first, get number of rows to determine next ID
+    query = "SELECT MAX(incentiveID) FROM Incentives"
+    cursor.execute(query)
+    result = cursor.fetchone()
+    if result[0] is None:
+        id = 1
+    else:
+        id = int(result[0]) + 1
+
+    query = "INSERT INTO Incentives VALUES ("
+    query += str(id)
+    query += ", '"
     query += name
     query += "', "
     query += str(cost)
@@ -97,7 +147,7 @@ def addIncentive(name, cost):
     connection.commit()
 
 def getIncentive(id):
-    query = "SELECT * FROM Incentives WHERE ID = "
+    query = "SELECT * FROM Incentives WHERE incentiveID = "
     query += str(id)
     cursor.execute(query)
     result = cursor.fetchall()
@@ -111,20 +161,33 @@ def getIncentive(id):
     ]
     return formatted_result
 
-def addReward(studentid, incentiveid):
-    query = "INSERT INTO IncentivesRewarded (studentid, incentiveid) VALUES ('"
+def addReward(studentid, incentiveid, rewardDate):
+    #first, get number of rows to determine next ID
+    query = "SELECT MAX(irID) FROM IncentivesRewarded"
+    cursor.execute(query)
+    result = cursor.fetchone()
+    if result[0] is None:
+        id = 1
+    else:
+        id = int(result[0]) + 1
+
+    query = "INSERT INTO IncentivesRewarded VALUES ("
+    query += str(id)
+    query += ", "
     query += str(studentid)
-    query += "', "
+    query += ", "
     query += str(incentiveid)
-    query += ")"
+    query += ", TO_DATE('"
+    query += rewardDate
+    query += "', 'YYYY-MM-DD'))"
     cursor.execute(query)
     connection.commit()
 
 def getRewarded(studentid):
     query = """
-    SELECT ir.id, u.email, i.cost FROM IncentivesRewarded ir
-    JOIN Incentives i ON ir.incentiveid = i.id
-    JOIN Users u on u.id = ir.studentid
+    SELECT ir.irid, u.email, i.cost, ir.rewardDate FROM IncentivesRewarded ir
+    JOIN Incentives i ON ir.incentiveid = i.incentiveid
+    JOIN Users u on u.userid = ir.studentid
     WHERE ir.studentid = """
     query += str(studentid)
     cursor.execute(query)
@@ -135,28 +198,40 @@ def getRewarded(studentid):
             "ID": row[0],
             "Name": row[1],
             "Cost": float(row[2]),
+            "Reward Date": row[3].strftime("%D")
         } for row in result
     ]
     return formatted_result
 
 def addGrade(studentid, assignmentid, grade, completedate):
-    query = "INSERT INTO Grades (studentid, assignmentid, grade, completedate) VALUES ("
+    #first, get number of rows to determine next ID
+    query = "SELECT MAX(gradeID) FROM Grades"
+    cursor.execute(query)
+    result = cursor.fetchone()
+    if result[0] is None:
+        id = 1
+    else:
+        id = int(result[0]) + 1
+
+    query = "INSERT INTO Grades VALUES ("
+    query += str(id),
+    query += ", "
     query += str(studentid)
     query += ", "
     query += str(assignmentid)
-    query += str(", ")
+    query += ", "
     query += str(grade)
-    query += ", TO_DATE("
+    query += ", TO_DATE('"
     query += completedate
-    query += ", 'YYYY-MM-DD'))"
+    query += "', 'YYYY-MM-DD'))"
     cursor.execute(query)
     connection.commit()
 
 def getGrades(studentid):
-    query = """SELECT g.id, u.email, a.name, g.grade, g.completedate
+    query = """SELECT g.studentid, u.email, a.name, g.grade, g.completedate
     FROM Grades g
-    JOIN Users u ON g.studentid = u.id
-    JOIN Assignments a ON g.assignmentid = a.id
+    JOIN Users u ON g.studentid = u.userid
+    JOIN Assignments a ON g.assignmentid = a.assignmentid
     WHERE g.studentid = """
     query += str(studentid)
     cursor.execute(query)
@@ -173,31 +248,46 @@ def getGrades(studentid):
     ]
     return formatted_result
 
+#Functions to collect data for trend views returns a list that contains, for each student, a list that contains dictionaries that describes the row of data. I.e., structure is a list of lists of dictionaries. The dictionary is just a formatted way of describing a row of data in the table
+def getScholarships():
+    scholarships = []
+    studentsList = getStudents();
+    for student in studentsList:
+        rewarded = getRewarded(student["ID"])
+        if (len(rewarded) > 0):
+            scholarships.append(getRewarded(student["ID"]))
+    return scholarships
+
+
 
 
 #testing
-#addUser("example3@gmail.com", "password", 2)
-result = getUser(3)
+#addUser("example4Teacher@gmail.com", "password", 2)
+result = getUser(1)
 for value in result:
     print(value)
 
-#addAssignment("'Assignment1'", "'2024-04-22'")
-result = getAssignment(4)
+#addAssignment("Assignment2", "2024-04-22")
+result = getAssignment(1)
 for value in result:
     print(value)
 
-#addIncentive("Scholarship1", 350.00)
+#addIncentive("Scholarship2", 350.00)
 result = getIncentive(1)
 for value in result:
     print(value)
 
-#addReward(3, 1)
-result = getRewarded(3)
+#addReward(3, 2, "2024-04-18")
+#result = getRewarded(5)
+#for value in result:
+#    print(value)
+
+#addGrade(1, 1, 90.7, "2024-04-17")
+result = getGrades(1)
 for value in result:
     print(value)
 
-#addGrade(3, 4, 90.7, "'2024-04-17'")
-result = getGrades(3)
+result = getScholarships()
 for value in result:
     print(value)
 connection.close()
