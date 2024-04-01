@@ -167,8 +167,8 @@ function Dashboard() {
           <Col xs={12} md={6}>
             <Card className="card-tasks">
               <CardHeader>
-                <h5 className="card-category">Advise List</h5>
-                <CardTitle tag="h4">Advise</CardTitle>
+                <h5 className="card-category">Advice List</h5>
+                <CardTitle tag="h4">Advice</CardTitle>
               </CardHeader>
               <CardBody>
                 <div className="table-full-width table-responsive">
@@ -347,7 +347,7 @@ function Dashboard() {
                     </tr>
                     <tr>
                       <td>Sage Rodriguez</td>
-                      <td>Mathmatics</td>
+                      <td>Mathematics</td>
                       <td>Baileux</td>
                       <td className="text-right">$5,142</td>
                     </tr>
