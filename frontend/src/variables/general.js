@@ -38,32 +38,32 @@ const tasks = [
 // // // table head data and table body data for Tables view
 // #############################
 
-const thead = ["Name", "Country", "City", "Salary"];
+const thead = ["Name", "Class", "Phone Number", "Email"];
 const tbody = [
   {
     className: "table-success",
-    data: ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
+    data: ["Porter Johnson", "Math", "444-324-1949", "porter@school.edu"],
   },
   {
     className: "",
-    data: ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
+    data: ["Maria Rodriguez", "English", "739-373-1824", "maria@school.edu"],
   },
   {
     className: "table-info",
-    data: ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"],
+    data: ["Ana Suzuki", "Science", "111-328-4718", "ana@school.edu"],
   },
   {
     className: "",
-    data: ["Philip Chaney", "Korea, South", "Overland Park", "$38,735"],
+    data: ["Mark Peterson", "History", "749-218-3217", "mark@school.edu"],
   },
   {
     className: "table-danger",
-    data: ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542"],
+    data: ["Andrew Williams", "Civics", "423-124-1629", "andrew@school.edu"],
   },
-  { className: "", data: ["Mason Porter", "Chile", "Gloucester", "$78,615"] },
+  { className: "", data: ["Jason Torres", "Music", "739-328-1273", "jason@school.edu"] },
   {
     className: "table-warning",
-    data: ["Jon Porter", "Portugal", "Gloucester", "$98,615"],
+    data: ["John Picard", "Astronomy", "934-123-4589", "john@school.edu"],
   },
 ];
 

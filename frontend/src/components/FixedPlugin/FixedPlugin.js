@@ -27,7 +27,7 @@ function FixedPlugin(props) {
       setClasses("dropdown");
     }
   };
-  return (
+  /**return (
     <div className="fixed-plugin">
       <div className={classes}>
         <div onClick={handleClick}>
@@ -95,32 +95,10 @@ function FixedPlugin(props) {
             </div>
           </li>
 
-          <li className="button-container">
-            <a
-              href="https://www.creative-tim.com/product/now-ui-dashboard-pro-react?ref=nudr-fixed-plugin"
-              target="_blank"
-              className="btn btn-primary btn-block btn-round"
-            >
-              Buy pro
-            </a>
-            <a
-              href="https://www.creative-tim.com/product/now-ui-dashboard-react?ref=nudr-fixed-plugin"
-              target="_blank"
-              className="btn btn-warning btn-block btn-round"
-            >
-              Download free
-            </a>
-            <a
-              href="https://demos.creative-tim.com/now-ui-dashboard-react/#/documentation/tutorial?ref=nudr-fixed-plugin"
-              className="btn btn-block btn-round btn-info"
-            >
-              Documentation
-            </a>
-          </li>
         </ul>
       </div>
     </div>
-  );
+  );*/
 }
 
 export default FixedPlugin;

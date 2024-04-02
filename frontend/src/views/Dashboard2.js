@@ -144,7 +144,7 @@ function Dashboard2() {
             <Card className="card-chart">
               <CardHeader>
                 <h5 className="card-category">Student Monitoring</h5>
-                <CardTitle tag="h4">24 Hours Performance</CardTitle>
+                <CardTitle tag="h4">7 Day Performance</CardTitle>
               </CardHeader>
               <CardBody>
                 <div className="chart-area">
@@ -336,31 +336,31 @@ function Dashboard2() {
                       <td>Dakota Rice</td>
                       <td>Accounting</td>
                       <td>Oud-Turnhout</td>
-                      <td className="text-right">$36,738</td>
+                      <td className="text-right">$6,738</td>
                     </tr>
                     <tr>
                       <td>Minerva Hooper</td>
                       <td>Computer Science</td>
                       <td>Sinaai-Waas</td>
-                      <td className="text-right">$23,789</td>
+                      <td className="text-right">$3,789</td>
                     </tr>
                     <tr>
                       <td>Sage Rodriguez</td>
-                      <td>Mathmatics</td>
+                      <td>Mathematics</td>
                       <td>Baileux</td>
-                      <td className="text-right">$56,142</td>
+                      <td className="text-right">$5,142</td>
                     </tr>
                     <tr>
                       <td>Doris Greene</td>
                       <td>History</td>
                       <td>Feldkirchen in Kärnten</td>
-                      <td className="text-right">$63,542</td>
+                      <td className="text-right">$3,542</td>
                     </tr>
                     <tr>
                       <td>Mason Porter</td>
-                      <td>Biologiy</td>
+                      <td>Biology</td>
                       <td>Gloucester</td>
-                      <td className="text-right">$78,615</td>
+                      <td className="text-right">$8,615</td>
                     </tr>
                   </tbody>
                 </Table>

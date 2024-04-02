@@ -145,7 +145,7 @@ function Dashboard() {
             <Card className="card-chart">
               <CardHeader>
                 <h5 className="card-category">Student Self Evaluation</h5>
-                <CardTitle tag="h4">24 Hours Performance</CardTitle>
+                <CardTitle tag="h4">7 Day Performance</CardTitle>
               </CardHeader>
               <CardBody>
                 <div className="chart-area">
@@ -167,8 +167,8 @@ function Dashboard() {
           <Col xs={12} md={6}>
             <Card className="card-tasks">
               <CardHeader>
-                <h5 className="card-category">Advise List</h5>
-                <CardTitle tag="h4">Advise</CardTitle>
+                <h5 className="card-category">Advice List</h5>
+                <CardTitle tag="h4">Advice</CardTitle>
               </CardHeader>
               <CardBody>
                 <div className="table-full-width table-responsive">
@@ -227,7 +227,7 @@ function Dashboard() {
                           </FormGroup>
                         </td>
                         <td className="text-left">
-                          Advice 2: Student "Minerva Hooper" should reduce time to play a computer game
+                          Advice 2: Student "Minerva Hooper" should reduce time playing computer games
                         </td>
                         <td className="td-actions text-right">
                           <Button
@@ -270,7 +270,7 @@ function Dashboard() {
                           </FormGroup>
                         </td>
                         <td className="text-left">
-                          Advice 3: Student "Sage Rodrguez" should do outdoor activities for the concentration
+                          Advice 3: Student "Sage Rodriguez" should do extracurricular activities for college applications
                         </td>
                         <td className="td-actions text-right">
                           <Button
@@ -337,31 +337,31 @@ function Dashboard() {
                       <td>Dakota Rice</td>
                       <td>Accounting</td>
                       <td>Oud-Turnhout</td>
-                      <td className="text-right">$36,738</td>
+                      <td className="text-right">$6,738</td>
                     </tr>
                     <tr>
                       <td>Minerva Hooper</td>
                       <td>Computer Science</td>
                       <td>Sinaai-Waas</td>
-                      <td className="text-right">$23,789</td>
+                      <td className="text-right">$3,789</td>
                     </tr>
                     <tr>
                       <td>Sage Rodriguez</td>
-                      <td>Mathmatics</td>
+                      <td>Mathematics</td>
                       <td>Baileux</td>
-                      <td className="text-right">$56,142</td>
+                      <td className="text-right">$5,142</td>
                     </tr>
                     <tr>
                       <td>Doris Greene</td>
                       <td>History</td>
                       <td>Feldkirchen in Kärnten</td>
-                      <td className="text-right">$63,542</td>
+                      <td className="text-right">$3,542</td>
                     </tr>
                     <tr>
                       <td>Mason Porter</td>
                       <td>Biology</td>
                       <td>Gloucester</td>
-                      <td className="text-right">$78,615</td>
+                      <td className="text-right">$8,615</td>
                     </tr>
                   </tbody>
                 </Table>
