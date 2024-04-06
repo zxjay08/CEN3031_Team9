@@ -1,23 +1,4 @@
-/*!
-
-=========================================================
-* Now UI Dashboard React - v1.5.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/now-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/now-ui-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React from "react";
-
-// reactstrap components
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -26,14 +7,45 @@ import {
   Table,
   Row,
   Col,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button
 } from "reactstrap";
-
-// core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
-import { thead, tbody } from "variables/general";
+// Sample initial data for the table
+const initialContacts = [
+  { id: 1, name: "John Doe", email: "john.doe@example.com", phone: "123-456-7890" },
+  { id: 2, name: "Jane Smith", email: "jane.smith@example.com", phone: "987-654-3210" },
+];
 
 function RegularTables() {
+  // State variables for contact form and list of registered contacts
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [contacts, setContacts] = useState(initialContacts);
+
+  // Function to handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Create new contact object
+    const newContact = {
+      id: contacts.length + 1, // Generate unique ID
+      name,
+      email,
+      phone
+    };
+    // Add new contact to the beginning of the list of contacts
+    setContacts([newContact, ...contacts]);
+    // Reset form fields
+    setName('');
+    setEmail('');
+    setPhone('');
+  };
+
   return (
     <>
       <PanelHeader size="sm" />
@@ -42,83 +54,73 @@ function RegularTables() {
           <Col xs={12}>
             <Card>
               <CardHeader>
-                <CardTitle tag="h4">Contact Information</CardTitle>
+                <CardTitle tag="h4">Contact Information List</CardTitle>
               </CardHeader>
               <CardBody>
+                {/* Display registered contacts in a table */}
                 <Table responsive>
                   <thead className="text-primary">
                     <tr>
-                      {thead.map((prop, key) => {
-                        if (key === thead.length - 1)
-                          return (
-                            <th key={key} className="text-right">
-                              {prop}
-                            </th>
-                          );
-                        return <th key={key}>{prop}</th>;
-                      })}
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {tbody.map((prop, key) => {
-                      return (
-                        <tr key={key}>
-                          {prop.data.map((prop, key) => {
-                            if (key === thead.length - 1)
-                              return (
-                                <td key={key} className="text-right">
-                                  {prop}
-                                </td>
-                              );
-                            return <td key={key}>{prop}</td>;
-                          })}
-                        </tr>
-                      );
-                    })}
+                    {contacts.map(contact => (
+                      <tr key={contact.id}>
+                        <td>{contact.name}</td>
+                        <td>{contact.email}</td>
+                        <td>{contact.phone}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </Table>
               </CardBody>
             </Card>
           </Col>
           <Col xs={12}>
-            <Card className="card-plain">
+            <Card>
               <CardHeader>
-                <CardTitle tag="h4">Table on Plain Background</CardTitle>
-                <p className="category"> Here is a subtitle for this table</p>
+                <CardTitle tag="h4">Register Contact</CardTitle>
               </CardHeader>
               <CardBody>
-                <Table responsive>
-                  <thead className="text-primary">
-                    <tr>
-                      {thead.map((prop, key) => {
-                        if (key === thead.length - 1)
-                          return (
-                            <th key={key} className="text-right">
-                              {prop}
-                            </th>
-                          );
-                        return <th key={key}>{prop}</th>;
-                      })}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tbody.map((prop, key) => {
-                      return (
-                        <tr key={key}>
-                          {prop.data.map((prop, key) => {
-                            if (key === thead.length - 1)
-                              return (
-                                <td key={key} className="text-right">
-                                  {prop}
-                                </td>
-                              );
-                            return <td key={key}>{prop}</td>;
-                          })}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
+                {/* Contact information registration form */}
+                <Form onSubmit={handleSubmit}>
+                  <FormGroup>
+                    <Label for="name">Name</Label>
+                    <Input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="email">Email</Label>
+                    <Input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="phone">Phone</Label>
+                    <Input
+                      type="text"
+                      id="phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                    />
+                  </FormGroup>
+                  <Button color="primary" type="submit">
+                    Register Contact
+                  </Button>
+                </Form>
               </CardBody>
             </Card>
           </Col>

@@ -71,3 +71,173 @@
   opacity: 1;
   color: #ffffff;
 }
+
+ Global Styles
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Container Styles */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh; /* Reduce height to make it more narrow */
+  margin-top: 50px; /* Add top margin to move it up */
+}
+
+/* Background Styles */
+.black-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20%; /* Reduce the height as desired */
+  background-color: #222;
+}
+.gray-background {
+  background-color: transparent; /* Make background transparent */
+  position: absolute;
+  top: 40%; /* Move it up a little bit */
+  left: 35%; /* Move it slightly to the left */
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60vh;
+}
+
+/* Title Styles */
+.welcome-title {
+  text-align: center;
+  color: #ffffff;
+  font-size: 36px;
+  margin-top: 20px;
+}
+
+/* Form Styles */
+.content {
+  padding: 20px;
+}
+
+.login-form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.radio-group {
+  display: flex; /* Use flexbox to align items in a row */
+  flex-direction: column; /* Align items in a column */
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 10px; /* Add some spacing between radio buttons */
+}
+
+.radio-group label {
+  margin-right: 10px;
+}
+
+.radio-options {
+  display: flex;
+  flex-direction: row; /* Align items in a row */
+  align-items: center; /* Center items vertically */
+  margin-bottom: 20px; /* Add margin between radio options and buttons */
+}
+
+.radio-option {
+  margin-right: 20px; /* Add spacing between radio options */
+}
+
+.radio-option input[type="radio"] {
+  margin-right: 5px; /* Add spacing between radio button and label */
+}
+
+.radio-option label {
+  margin: 0; /* Reset margin */
+}
+
+
+/* Button Styles */
+button {
+  cursor: pointer;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  background-color: #007bff;
+}
+
+/* Button Styles */
+.login-button, .signup-button {
+  background-color: #ffffff; /* Set button background color to white */
+  color: #007bff; /* Set button text color to a bright blue */
+  border: 1px solid #007bff; /* Add border to the buttons */
+  padding: 10px 20px; /* Add padding */
+  font-size: 16px; /* Set font size */
+  cursor: pointer; /* Add cursor pointer on hover */
+  transition: background-color 0.3s ease; /* Add smooth transition effect */
+  margin-right: 20px; /* Add margin between buttons */
+}
+
+/* Button Hover Effect */
+.login-button:hover, .signup-button:hover {
+  background-color: #f8f9fa; /* Set button background color to a lighter shade of gray on hover */
+}
+/* Fancy Title Styles */
+.welcome-title {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Choose a clean, modern font */
+  font-size: 36px; /* Set a moderate font size */
+  color: #FFFFFF; /* Set a white text color */
+  text-transform: uppercase; /* Convert text to uppercase for emphasis */
+  letter-spacing: 1px; /* Add slight letter spacing */
+  margin-left: -200px; /* Move the text to the left by 200px */
+}
+
+
+/* Add this CSS to your existing styles */
+.react-calendar__tile {
+  background: white !important;
+  color: inherit !important;
+}
+
+/* Add this CSS to your existing styles */
+.react-calendar__month-view__days__day--weekend {
+  background: white !important;
+  color: inherit !important;
+}
+
+.react-calendar__navigation button {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+
+
+.larger-tile {
+  width: 50px; /* Adjust the width as needed */
+  height: 50px; /* Adjust the height as needed */
+}
+
+.custom-calendar-style {
+  background-color: #f4f5f7; /* Use the same background color as the User component */
+}
