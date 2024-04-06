@@ -25,6 +25,7 @@ import Maps from "views/Maps.js";
 import Upgrade from "views/Upgrade.js";
 import UserPage from "views/UserPage.js";
 import Login from "views/Login.js"
+import Chat from "views/Chat.js"
 
 var dashRoutes = [
   {
@@ -49,10 +50,10 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/maps",
+    path: "/chat",
     name: "Chat",
     icon: "design_vector",
-    component: <Maps />,
+    component: <Chat />,
     layout: "/admin",
   },
   {
