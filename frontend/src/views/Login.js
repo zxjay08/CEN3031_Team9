@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "assets/css/demo.css";
 import logo from "../logo-white.svg";
+import axios from "axios";
 
 function Login() {
   // State variables to store username, password, and user type
@@ -10,14 +11,23 @@ function Login() {
   const [hasId, setHasId] = useState(false); // Indicates whether the user has an ID
 
   // Function to handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you can perform authentication logic
     console.log("Username:", username);
     console.log("Password:", password);
     console.log("User Type:", userType);
-    // Assuming authentication is successful, set hasId to true
-    setHasId(true);
+
+    // Perform query
+    const response = await axios.get(`http://localhost:5000/login?userType=${userType}&username=${username}&password=${password}`);
+    if(response.data.activated === true) {
+      // Assuming authentication is successful, set hasId to true
+      setHasId(true);
+      console.log("success")
+    } else {
+      setHasId(false);
+      console.log("fail")
+    }
     // Reset the form
     setUsername('');
     setPassword('');
