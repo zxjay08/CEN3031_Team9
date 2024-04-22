@@ -241,3 +241,11 @@ button {
 .custom-calendar-style {
   background-color: #f4f5f7; /* Use the same background color as the User component */
 }
+
+.dot {
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  background-color: #007bff; /* You can use any color you prefer */
+  border-radius: 50%;
+}

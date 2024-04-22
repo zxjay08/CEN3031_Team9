@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import {
   Button,
   Card,
@@ -13,13 +14,50 @@ import {
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
 function User() {
-  // Dummy data for registered students
-  const registeredStudents = [
-    { id: 1, name: "John Doe", major: "Computer Science", email: "john.doe@example.com" },
-    { id: 2, name: "Jane Smith", major: "Mathematics", email: "jane.smith@example.com" },
-    { id: 3, name: "Michael Johnson", major: "Physics", email: "michael.johnson@example.com" },
-    { id: 4, name: "Emily Brown", major: "Biology", email: "emily.brown@example.com" },
-  ];
+  const [userType, setUserType] = useState('student');
+  const [showMajorInput, setShowMajorInput] = useState(true);
+  const [registrationComplete, setRegistrationComplete] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleUserTypeChange = (e) => {
+    const selectedType = e.target.value;
+    setUserType(selectedType);
+    setShowMajorInput(selectedType === 'student');
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      console.error("Passwords do not match");
+      return;
+    }
+
+    const formData = {
+      user_type: userType,
+      major: e.target.elements.major.value || 'n/a',
+      username: e.target.elements.username.value,
+      email: e.target.elements.email.value,
+      first_name: e.target.elements.first_name.value,
+      last_name: e.target.elements.last_name.value,
+      address: e.target.elements.address.value,
+      city: e.target.elements.city.value,
+      country: e.target.elements.country.value,
+      postal_code: e.target.elements.postal_code.value,
+      about_student: e.target.elements.about_student.value,
+      password: password,
+    };
+
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/save-data", formData);
+      console.log("Response:", response.data);
+      setRegistrationComplete(true);
+      window.location.href = '/login'; // Redirect to /login page
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <>
@@ -29,29 +67,71 @@ function User() {
           <Col md="8">
             <Card>
               <CardHeader>
-                <h5 className="title">Register Student</h5>
+                <h5 className="title">Register</h5>
               </CardHeader>
               <CardBody>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                   <Row>
                     <Col className="pr-1" md="5">
                       <FormGroup>
-                        <label>Major</label>
-                        <Input placeholder="Major" type="text" />
+                        <label>User Type:</label>
+                        <div className="radio-options">
+                          <div className="radio-option">
+                            <input
+                              type="radio"
+                              id="student"
+                              name="userType"
+                              value="student"
+                              checked={userType === 'student'}
+                              onChange={handleUserTypeChange}
+                            />
+                            <label htmlFor="student">Student</label>
+                          </div>
+                          <div className="radio-option">
+                            <input
+                              type="radio"
+                              id="parent"
+                              name="userType"
+                              value="parent"
+                              checked={userType === 'parent'}
+                              onChange={handleUserTypeChange}
+                            />
+                            <label htmlFor="parent">Parent</label>
+                          </div>
+                          <div className="radio-option">
+                            <input
+                              type="radio"
+                              id="teacher"
+                              name="userType"
+                              value="teacher"
+                              checked={userType === 'teacher'}
+                              onChange={handleUserTypeChange}
+                            />
+                            <label htmlFor="teacher">Teacher</label>
+                          </div>
+                        </div>
                       </FormGroup>
                     </Col>
-                    <Col className="px-1" md="3">
+                    {showMajorInput && (
+                      <Col className="pr-1" md="5">
+                        <FormGroup>
+                          <label>Major</label>
+                          <Input name="major" placeholder="Major" type="text" />
+                        </FormGroup>
+                      </Col>
+                    )}
+                  </Row>
+                  <Row>
+                    <Col className="pr-1" md="3">
                       <FormGroup>
                         <label>Username</label>
-                        <Input placeholder="Username" type="text" />
+                        <Input name="username" placeholder="Username" type="text" />
                       </FormGroup>
                     </Col>
                     <Col className="pl-1" md="4">
                       <FormGroup>
-                        <label htmlFor="exampleInputEmail1">
-                          Email address
-                        </label>
-                        <Input placeholder="Email" type="email" />
+                        <label>Email address</label>
+                        <Input name="email" placeholder="Email" type="email" />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -59,13 +139,13 @@ function User() {
                     <Col className="pr-1" md="6">
                       <FormGroup>
                         <label>First Name</label>
-                        <Input placeholder="Class Name" type="text" />
+                        <Input name="first_name" placeholder="First Name" type="text" />
                       </FormGroup>
                     </Col>
                     <Col className="pl-1" md="6">
                       <FormGroup>
                         <label>Last Name</label>
-                        <Input placeholder="Last Name" type="text" />
+                        <Input name="last_name" placeholder="Last Name" type="text" />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -73,7 +153,7 @@ function User() {
                     <Col md="12">
                       <FormGroup>
                         <label>Address</label>
-                        <Input placeholder="Home Address" type="text" />
+                        <Input name="address" placeholder="Address" type="text" />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -81,19 +161,19 @@ function User() {
                     <Col className="pr-1" md="4">
                       <FormGroup>
                         <label>City</label>
-                        <Input placeholder="City" type="text" />
+                        <Input name="city" placeholder="City" type="text" />
                       </FormGroup>
                     </Col>
                     <Col className="px-1" md="4">
                       <FormGroup>
                         <label>Country</label>
-                        <Input placeholder="Country" type="text" />
+                        <Input name="country" placeholder="Country" type="text" />
                       </FormGroup>
                     </Col>
                     <Col className="pl-1" md="4">
                       <FormGroup>
                         <label>Postal Code</label>
-                        <Input placeholder="ZIP Code" type="number" />
+                        <Input name="postal_code" placeholder="ZIP Code" type="number" />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -101,11 +181,32 @@ function User() {
                     <Col md="12">
                       <FormGroup>
                         <label>About Student</label>
+                        <Input name="about_student" placeholder="Description" type="textarea" />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="pr-1" md="6">
+                      <FormGroup>
+                        <label>Password</label>
                         <Input
-                          cols="80"
-                          placeholder="Description"
-                          rows="4"
-                          type="textarea"
+                          name="password"
+                          placeholder="Password"
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col className="pl-1" md="6">
+                      <FormGroup>
+                        <label>Confirm Password</label>
+                        <Input
+                          name="confirmPassword"
+                          placeholder="Confirm Password"
+                          type="password"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                       </FormGroup>
                     </Col>
@@ -114,24 +215,6 @@ function User() {
                     Register
                   </Button>
                 </Form>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col md="4">
-            <Card>
-              <CardHeader>
-                <h5 className="title">Registered Students</h5>
-              </CardHeader>
-              <CardBody>
-                <ul>
-                  {registeredStudents.map((student) => (
-                    <li key={student.id}>
-                      <strong>Name:</strong> {student.name}<br />
-                      <strong>Major:</strong> {student.major}<br />
-                      <strong>Email:</strong> {student.email}
-                    </li>
-                  ))}
-                </ul>
               </CardBody>
             </Card>
           </Col>

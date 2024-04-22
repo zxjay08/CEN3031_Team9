@@ -5,7 +5,6 @@
     "react-router-dom": "^6.22.3"
   },
   "resolutions": {
-  "workbox-webpack-plugin": "^6.6.1"
-}
-
+    "workbox-webpack-plugin": "^6.6.1"
+  }
 }

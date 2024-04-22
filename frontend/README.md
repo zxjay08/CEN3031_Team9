@@ -131,11 +131,11 @@ Now UI Dashboard React
         ├── Icons
         │   └── Icons.js
         ├── Maps
-        │   └── Maps.js
+        │   └── AwardView.js
         ├── Notifications
         │   ├── NotificationSystem
         │   │   └── NotificationSystem.js
-        │   └── Notifications.js
+        │   └── Assignment.js
         ├── Table
         │   └── Tables.js
         ├── Typography
