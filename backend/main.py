@@ -1,5 +1,6 @@
 # main.py
-from fastapi import FastAPI
+import uvicorn
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import oracledb
 import datetime
@@ -9,10 +10,10 @@ import cx_Oracle
 app = FastAPI()
 
 # Enable CORS (Cross-Origin Resource Sharing) to allow requests from the React frontend
-# Replace the origin URL with the URL of your React frontend
+# Replace the origin URL with the URL of the React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Update with your React app's URL
+    allow_origins=["http://localhost:3000"],  # Update with the React app's URL
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
@@ -25,16 +26,20 @@ scholarship_trends = [
     {"year": 2022, "total_students": 90},
 ]
 
+
 @app.get("/api/scholarship/trends")
 async def get_scholarship_trends():
     return scholarship_trends
 
-# Connect to DB 
-connection = oracledb.connect(user="bernardor96", password="uBWuX2hBy8rFHXmO7CLnwece", host="oracle.cise.ufl.edu", port=1521, service_name="orcl")
+
+# Connect to DB with Oracle DB account information
+connection = oracledb.connect(user="bernardor96", password="uBWuX2hBy8rFHXmO7CLnwece", host="oracle.cise.ufl.edu",
+                              port=1521, service_name="orcl")
 cursor = connection.cursor()
 
 print("Successfully connected to Oracle Database")
 
+# Class for general user information
 class User(BaseModel):
     user_type: str
     major: str
@@ -49,12 +54,15 @@ class User(BaseModel):
     about_student: str
     password: str
 
+
 class UserLogin(BaseModel):
     username: str
     password: str
     userType: str
 
+
 # POST 요청을 처리하는 메서드
+# Used to save information about a user
 @app.post("/save-data")
 async def save_data(user: User):
     try:
@@ -89,12 +97,14 @@ async def save_data(user: User):
         return {"message": "Error occurred while saving data"}
 
 
+
 @app.post("/login")
 async def login(user_data: UserLogin):
     username = user_data.username
     password = user_data.password
     user_type = user_data.userType
 
+# Used to query whether a user login is correct
     try:
         # Check if the user exists in the database
         cursor.execute("""
@@ -107,7 +117,6 @@ async def login(user_data: UserLogin):
         })
         result = cursor.fetchone()
 
-        # If the user exists, return authentication success
         if result[0] > 0:
             authenticated = True
         else:
@@ -123,6 +132,7 @@ async def login(user_data: UserLogin):
 @app.on_event("shutdown")
 def shutdown_event():
     connection.close()
+
 
 # def addUser(email, password, typeid):
 #     #first, get number of rows to determine next ID
@@ -469,3 +479,7 @@ def shutdown_event():
 # print(calculateAllStudentGPAs())
 #
 # connection.close()
+
+# Rerun this file as an uvicorn backend app
+if __name__ == "__main__":
+    uvicorn.run("main:app", port=5000, log_level="info")
