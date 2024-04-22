@@ -12,8 +12,13 @@ import {
 } from "reactstrap";
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import Calendar from 'react-calendar';
+import "assets/css/demo.css";
 
 function AssignmentDetails({ assignment }) {
+  if (!assignment) {
+    return null;
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -23,8 +28,7 @@ function AssignmentDetails({ assignment }) {
         <ul>
           <li><strong>Title:</strong> {assignment.title}</li>
           <li><strong>Description:</strong> {assignment.description}</li>
-          <li><strong>Due Date:</strong> {assignment.dueDate}</li>
-          {/* Add more details here as needed */}
+          <li><strong>Due Date:</strong> {assignment.dueDate.toLocaleDateString()}</li>
         </ul>
       </CardBody>
     </Card>
@@ -32,28 +36,26 @@ function AssignmentDetails({ assignment }) {
 }
 
 function User() {
-  // Dummy data for registered students
-  const registeredStudents = [
-    { id: 1, name: "John Doe", major: "Computer Science", email: "john.doe@example.com" },
-    { id: 2, name: "Jane Smith", major: "Mathematics", email: "jane.smith@example.com" },
-    { id: 3, name: "Michael Johnson", major: "Physics", email: "michael.johnson@example.com" },
-    { id: 4, name: "Emily Brown", major: "Biology", email: "emily.brown@example.com" },
-  ];
-
-  // Dummy data for assignments
   const [assignments, setAssignments] = useState([
-    { id: 1, title: "Assignment 1", description: "Description for Assignment 1", dueDate: "2024-04-10" },
-    { id: 2, title: "Assignment 2", description: "Description for Assignment 2", dueDate: "2024-04-15" },
-    // Add more assignments as needed
+    { id: 1, title: "Assignment 1", description: "Description for Assignment 1", dueDate: new Date("2024-04-10") },
+    { id: 2, title: "Assignment 2", description: "Description for Assignment 2", dueDate: new Date("2024-04-15") },
   ]);
   const [newAssignmentTitle, setNewAssignmentTitle] = useState('');
   const [newAssignmentDescription, setNewAssignmentDescription] = useState('');
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const handleAssignmentClick = (assignment) => {
-    setSelectedAssignment(assignment);
-  };
+  const handleAssignmentClick = (date) => {
+  const assignmentForDate = assignments.find((assignment) => {
+    const assignmentDate = new Date(assignment.dueDate);
+    return (
+      assignmentDate.getFullYear() === date.getFullYear() &&
+      assignmentDate.getMonth() === date.getMonth() &&
+      assignmentDate.getDate() === date.getDate()
+    );
+  });
+  setSelectedAssignment(assignmentForDate || null);
+};
 
   const handleAssignmentRegistration = () => {
     if (newAssignmentTitle.trim() !== '') {
@@ -61,8 +63,7 @@ function User() {
         id: assignments.length + 1,
         title: newAssignmentTitle,
         description: newAssignmentDescription,
-        dueDate: selectedDate.toISOString().split('T')[0],
-        // You can add more properties here as needed
+        dueDate: selectedDate,
       };
       setAssignments([...assignments, newAssignment]);
       setNewAssignmentTitle('');
@@ -82,28 +83,26 @@ function User() {
                 <h5 className="title">Calendar</h5>
               </CardHeader>
               <CardBody>
-                <div>
-                  <Calendar
-                    locale="en-US"
-                    tileContent={({ date, view }) => {
-                      if (view === 'month') {
-                        const assignmentForDate = assignments.find(assignment => assignment.dueDate === date.toISOString().split('T')[0]);
-                        return assignmentForDate ? (
-                          <span
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleAssignmentClick(assignmentForDate)}
-                          >
-                            {assignmentForDate.title}
-                          </span>
-                        ) : null;
-                      }
-                    }}
-                    onClickDay={(value) => {
-                      setSelectedDate(value);
-                      setSelectedAssignment(null);
-                    }}
-                  />
-                </div>
+                <Calendar
+                  locale="en-US"
+                  tileContent={({ date, view }) => {
+                    if (view === 'month') {
+                      const hasAssignment = assignments.some((assignment) => {
+                      const assignmentDate = new Date(assignment.dueDate);
+                      return (
+                        assignmentDate.getFullYear() === date.getFullYear() &&
+                        assignmentDate.getMonth() === date.getMonth() &&
+                        assignmentDate.getDate() === date.getDate()
+                      );
+                    });
+                    return hasAssignment ? <span>&#9679;</span> : null;
+                  }
+                }}
+                onClickDay={(value, event) => {
+                  setSelectedDate(value);
+                  handleAssignmentClick(value);
+                }}
+              />
               </CardBody>
             </Card>
           </Col>

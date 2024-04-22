@@ -17,11 +17,11 @@
 */
 import Dashboard from "views/Dashboard.js";
 import Dashboard2 from "views/Dashboard2.js";
-import Notifications from "views/Notifications.js";
+import Notifications from "./views/Assignment.js";
 import Icons from "views/Icons.js";
 import Typography from "views/Typography.js";
 import TableList from "views/TableList.js";
-import Maps from "views/Maps.js";
+import AwardView from "./views/AwardView.js";
 import Upgrade from "views/Upgrade.js";
 import UserPage from "views/UserPage.js";
 import Login from "views/Login.js"
@@ -57,10 +57,10 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/maps",
+    path: "/awardview",
     name: "Award View",
     icon: "sport_trophy",
-    component: <Maps />,
+    component: <AwardView />,
     layout: "/admin",
   },
   {
@@ -84,20 +84,20 @@ var dashRoutes = [
     component: <TableList />,
     layout: "/admin",
   },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "design_image",
-    component: <Icons />,
-    layout: "/admin",
-  },
-  {
-    path: "/typography",
-    name: "Typography",
-    icon: "design-2_ruler-pencil",
-    component: <Typography />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "design_image",
+  //   component: <Icons />,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/typography",
+  //   name: "Typography",
+  //   icon: "design-2_ruler-pencil",
+  //   component: <Typography />,
+  //   layout: "/admin",
+  // },
   // {
   //   pro: true,
   //   path: "/upgrade",

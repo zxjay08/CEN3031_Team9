@@ -49,6 +49,11 @@ class User(BaseModel):
     about_student: str
     password: str
 
+class UserLogin(BaseModel):
+    username: str
+    password: str
+    userType: str
+
 # POST 요청을 처리하는 메서드
 @app.post("/save-data")
 async def save_data(user: User):
@@ -83,38 +88,36 @@ async def save_data(user: User):
         print(e)
         return {"message": "Error occurred while saving data"}
 
+
 @app.post("/login")
-async def login(userType: str, username: str, password: str):
-    # Connect to Oracle database
-    connection = cx_Oracle.connect("username", "password", "dsn")
+async def login(user_data: UserLogin):
+    username = user_data.username
+    password = user_data.password
+    user_type = user_data.userType
 
     try:
-        cursor = connection.cursor()
-
-        # Query the 'users2' table to check if the user exists, the password is correct, and the user type matches
-        query = """
-        SELECT COUNT(*)
-        FROM users2
-        WHERE username = :username AND password = :password AND user_type = :userType
-        """
-        cursor.execute(query, username=username, password=password, userType=userType)
+        # Check if the user exists in the database
+        cursor.execute("""
+            SELECT COUNT(*) FROM users2 
+            WHERE username = :username AND password = :password AND user_type = :user_type
+        """, {
+            'username': username,
+            'password': password,
+            'user_type': user_type
+        })
         result = cursor.fetchone()
 
+        # If the user exists, return authentication success
         if result[0] > 0:
-            # User authenticated
-            return {"authenticated": True}
+            authenticated = True
         else:
-            # User not authenticated
-            return {"authenticated": False}
+            authenticated = False
 
-    except cx_Oracle.Error as error:
-        raise HTTPException(status_code=500, detail=f"Database error: {error}")
+        return {"authenticated": authenticated}
 
-    finally:
-        if 'cursor' in locals():
-            cursor.close()
-        if 'connection' in locals():
-            connection.close()
+    except Exception as e:
+        print(e)
+        return {"authenticated": False}
 
 
 @app.on_event("shutdown")

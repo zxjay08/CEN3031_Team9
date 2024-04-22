@@ -1,6 +1,6 @@
 //import logo from './logo.svg';
 import React from 'react'
-import {Routes, Route, BrowserRouter} from 'react-router-dom'
+import {Routes, Route, BrowserRouter, Switch} from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.css'
 import { Selection } from './pages/Selection'
 import './App.css';

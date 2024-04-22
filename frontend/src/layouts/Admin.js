@@ -21,6 +21,8 @@ import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { Link } from 'react-router-dom';
+
 
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
