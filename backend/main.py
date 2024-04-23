@@ -12,7 +12,7 @@ app = FastAPI()
 # Enable CORS (Cross-Origin Resource Sharing) to allow requests from the React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # This backend runs on port 3000
+    allow_origins=["http://localhost:3000"],  # This backend runs on port 8000 and allows connections from port 3000
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
@@ -485,4 +485,4 @@ def shutdown_event():
 
 # Rerun this file as an uvicorn backend app
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=5000, log_level="info")
+    uvicorn.run("main:app", port=8000, log_level="info")
