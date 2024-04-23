@@ -12,7 +12,7 @@ app = FastAPI()
 # Enable CORS (Cross-Origin Resource Sharing) to allow requests from the React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # This backend runs on port 3000
+    allow_origins=["http://localhost:3000"],  # This backend runs on port 8000 and allows connections from port 3000
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
@@ -62,6 +62,12 @@ class UserLogin(BaseModel):
     password: str
     userType: str
 
+# Class for assignment model
+
+class Assignment(BaseModel):
+    title: str
+    description: str
+    dueDate: str #Oracle DB standard is DD-Mon-YY e.g. 30-JAN-23
 
 # Method to handle POST request
 # Used to save information about a user
@@ -129,6 +135,59 @@ async def login(user_data: UserLogin):
     except Exception as e:
         print(e)
         return {"authenticated": False}  # Return authenticated=false for safety if an exception occurs
+
+
+#Get assignment list (used in assignment.js)
+@app.get("/get-assignments")
+async def get_assignments():
+    query = "SELECT assignmentID, name, description, to_char(duedate, 'YYYY'), to_char(duedate, 'MM'), to_char(duedate,'DD') FROM Assignments"
+    cursor.execute(query)
+    result = cursor.fetchall()
+
+    formatted_result = [
+        {
+            "id": row[0],
+            "title": row[1],
+            "description": row[2],
+            "dueDate": row[3] + "-" + row[4] + "-" + row[5],
+        } for row in result
+    ]
+    return formatted_result
+
+#Create a new assignment
+@app.post("/create-assignment")
+async def create_assignment(assignment: Assignment):
+    #first, get number of rows to determine next ID
+    query = "SELECT MAX(assignmentID) FROM Assignments"
+    cursor.execute(query)
+    result = cursor.fetchone()
+    if result[0] is None:
+        id = 1
+    else:
+        id = int(result[0]) + 1
+    try:
+        # Execute SQL query
+        cursor.execute("""
+            INSERT INTO Assignments (assignmentID, name, dueDate, description)
+            VALUES (:id, :title, TO_DATE(:duedate, 'YYYY-MM-DD'), :description)
+        """, {
+            'id': str(id),
+            'title': assignment.title,
+            'dueDate': assignment.dueDate,
+            'description': assignment.description
+        })
+            
+        # Commit
+        connection.commit()
+
+        # Return that the data was saved successfully (returning data not required)
+        return {"message": "Assignment saved successfully"}
+    except Exception as e:
+        # Rollback and output log when error occurs
+        connection.rollback()
+        print(e)
+        return {"message": "Error occurred while saving assignment"}
+
 
 
 # Shutdown server on shutdown request
@@ -485,4 +544,4 @@ def shutdown_event():
 
 # Rerun this file as an uvicorn backend app
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=5000, log_level="info")
+    uvicorn.run("main:app", port=8000, log_level="info")

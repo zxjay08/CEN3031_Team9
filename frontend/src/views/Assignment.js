@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Card,
@@ -13,6 +13,7 @@ import {
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import Calendar from 'react-calendar';
 import "assets/css/demo.css";
+import axios from "axios";
 
 
 // Shows a single assignment
@@ -30,7 +31,7 @@ function AssignmentDetails({ assignment }) {
         <ul>
           <li><strong>Title:</strong> {assignment.title}</li>
           <li><strong>Description:</strong> {assignment.description}</li>
-          <li><strong>Due Date:</strong> {assignment.dueDate.toLocaleDateString()}</li>
+          <li><strong>Due Date:</strong> {assignment.dueDate}</li>
         </ul>
       </CardBody>
     </Card>
@@ -49,8 +50,18 @@ function User() {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
+  
+
+  useEffect(() => {
+    const initLoad = async () => {
+      const backendAssignments = await axios.get('http://127.0.0.1:8000/get-assignments')
+      setAssignments(backendAssignments.data)
+      return
+    };
+    initLoad();
+  }, [])
   // Show information upon clicking the assignment
-  const handleAssignmentClick = (date) => {
+  const handleAssignmentClick = async (date) => {
   const assignmentForDate = assignments.find((assignment) => {
     const assignmentDate = new Date(assignment.dueDate);
     return (
@@ -63,15 +74,15 @@ function User() {
 };
 
   // Handler that creates assignments
-  const handleAssignmentRegistration = () => {
+  const handleAssignmentRegistration = async (e) => {
     if (newAssignmentTitle.trim() !== '') {
       const newAssignment = {
-        id: assignments.length + 1,
         title: newAssignmentTitle,
         description: newAssignmentDescription,
-        dueDate: selectedDate,
+        dueDate: selectedDate.getFullYear() + "-" + selectedDate.getMonth() + "-" + selectedDate.getDate()
       };
-      setAssignments([...assignments, newAssignment]);
+      console.log(newAssignment.dueDate)
+      await axios.post('http://127.0.0.1:8000/create-assignment', newAssignment)
       setNewAssignmentTitle('');
       setNewAssignmentDescription('');
       setSelectedDate(null);
@@ -149,7 +160,7 @@ function User() {
                         <label>Date</label>
                         <Input
                           type="text"
-                          value={selectedDate ? selectedDate.toLocaleDateString() : ''}
+                          value={selectedDate ? selectedDate: ''}
                           disabled
                         />
                       </FormGroup>
