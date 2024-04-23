@@ -27,6 +27,7 @@ import AdminLayout from "layouts/Admin.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
+// Navigate to login page by default
 root.render(
   <BrowserRouter>
     <Routes>

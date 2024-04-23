@@ -4,28 +4,32 @@ import "assets/css/demo.css";
 import logo from "../logo-white.svg";
 import axios from "axios";
 
+// Login function page
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('student');
+  const [userType, setUserType] = useState('student'); // Use student account by default
   const [loginFailed, setLoginFailed] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Handles login submit functionality
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
+      // Connect axios on port 8000
       const response = await axios.post('http://127.0.0.1:8000/login', {
         username,
         password,
         userType,
       });
+      // Response 200: success. The backend returns authenticated=true upon authentication.
       if (response.status === 200 && response.data.authenticated) {
-        // Login successful
+        // Login successful. Set username state to the appropriate variable
         navigate('/admin/dashboard', {state: {username: response.data.username}});
       } else {
-        // Login failed
+        // Login failed. Run the appropriate function
         setLoginFailed(true);
       }
     } catch (error) {
@@ -36,11 +40,12 @@ function Login() {
         console.error('Login failed:', error.message);
       }
     } finally {
+      // Stop UI from showing loading icon
       setLoading(false);
     }
   };
 
-
+    // Set userType accordingly, and link to signup function.
     return (
         <div className="login-container">
           <div className="black-background"></div>
@@ -104,6 +109,28 @@ function Login() {
                           onChange={() => setUserType('teacher')}
                       />
                       <label htmlFor="teacher">Teacher</label>
+                    </div>
+                    <div className="radio-option">
+                      <input
+                          type="radio"
+                          id="advisor"
+                          name="userType"
+                          value="advisor"
+                          checked={userType === 'advisor'}
+                          onChange={() => setUserType('advisor')}
+                      />
+                      <label htmlFor="advisor">Advisor</label>
+                    </div>
+                    <div className="radio-option">
+                      <input
+                          type="radio"
+                          id="secretary"
+                          name="userType"
+                          value="secretary"
+                          checked={userType === 'secretary'}
+                          onChange={() => setUserType('secretary')}
+                      />
+                      <label htmlFor="secretary">Secretary</label>
                     </div>
                   </div>
                 </div>

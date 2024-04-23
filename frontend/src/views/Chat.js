@@ -8,16 +8,20 @@ import {
   Col,
 } from "reactstrap";
 
+// Create chat page functionality
 class ChatPage extends React.Component {
+  // First time message
   componentDidMount() {
     addResponseMessage("Welcome to Secretary Bot! How can I assist you today?");
   }
 
+  // Message handler
   handleNewUserMessage = (newMessage) => {
     console.log(`New message incoming! ${newMessage}`);
-    // Here you can implement logic to interact with your secretary bot
+    // TODO: add chat logic
   };
 
+  // View chat page HTML
   render() {
     return (
       <>

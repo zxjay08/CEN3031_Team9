@@ -13,6 +13,7 @@ import {
 } from "reactstrap";
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
+// User profile view function
 function User() {
   const [userType, setUserType] = useState('student');
   const [showMajorInput, setShowMajorInput] = useState(true);
@@ -20,20 +21,22 @@ function User() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  // Allow user to change type
   const handleUserTypeChange = (e) => {
     const selectedType = e.target.value;
     setUserType(selectedType);
     setShowMajorInput(selectedType === 'student');
   };
 
+  // Handle data update when the user clicks submit changes
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // Authenticate user before changing information
     if (password !== confirmPassword) {
       console.error("Passwords do not match");
       return;
     }
-
+    // Required form data
     const formData = {
       user_type: userType,
       major: e.target.elements.major.value || 'n/a',
@@ -50,10 +53,11 @@ function User() {
     };
 
     try {
+      // Use axios to connect to the backend at port 8000
       const response = await axios.post("http://127.0.0.1:8000/save-data", formData);
       console.log("Response:", response.data);
       setRegistrationComplete(true);
-      window.location.href = '/login'; // Redirect to /login page
+      window.location.href = '/login'; // Redirect to /login page upon success
     } catch (error) {
       console.error("Error:", error);
     }
@@ -109,9 +113,33 @@ function User() {
                             />
                             <label htmlFor="teacher">Teacher</label>
                           </div>
+                          <div className="radio-option">
+                            <input
+                                type="radio"
+                                id="advisor"
+                                name="userType"
+                                value="advisor"
+                                checked={userType === 'advisor'}
+                                onChange={handleUserTypeChange}
+                            />
+                            <label htmlFor="advisor">Advisor</label>
+                          </div>
+                          <div className="radio-option">
+                            <input
+                                type="radio"
+                                id="secretary"
+                                name="userType"
+                                value="secretary"
+                                checked={userType === 'secretary'}
+                                onChange={handleUserTypeChange}
+                            />
+                            <label htmlFor="secretary">Secretary</label>
+                          </div>
                         </div>
                       </FormGroup>
                     </Col>
+                  </Row>
+                  <Row>
                     {showMajorInput && (
                       <Col className="pr-1" md="5">
                         <FormGroup>

@@ -23,6 +23,7 @@ import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
+// Currently unused
 function Typography() {
   return (
     <>
