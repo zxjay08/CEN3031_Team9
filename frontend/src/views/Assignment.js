@@ -67,7 +67,7 @@ function User() {
     return (
       assignmentDate.getFullYear() === date.getFullYear() &&
       assignmentDate.getMonth() === date.getMonth() &&
-      assignmentDate.getDate()+1 === date.getDate()
+      assignmentDate.getDate() === date.getDate()
     );
   });
   setSelectedAssignment(assignmentForDate || null);
@@ -114,7 +114,7 @@ function User() {
                           // Show assignment information
                         assignmentDate.getFullYear() === date.getFullYear() &&
                         assignmentDate.getMonth() === date.getMonth() &&
-                        assignmentDate.getDate()+1 === date.getDate()
+                        assignmentDate.getDate() === date.getDate()
                       );
                     });
                     return hasAssignment ? <span>&#9679;</span> : null;
