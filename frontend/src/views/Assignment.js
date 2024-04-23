@@ -71,6 +71,8 @@ function User() {
     );
   });
   setSelectedAssignment(assignmentForDate || null);
+  const backendAssignments = await axios.get('http://127.0.0.1:8000/get-assignments')
+      setAssignments(backendAssignments.data)
 };
 
   // Handler that creates assignments
@@ -79,13 +81,15 @@ function User() {
       const newAssignment = {
         title: newAssignmentTitle,
         description: newAssignmentDescription,
-        dueDate: selectedDate.getFullYear() + "-" + selectedDate.getMonth() + "-" + selectedDate.getDate()
+        dueDate: selectedDate.getFullYear() + "-" + (parseInt(selectedDate.getMonth())+1).toString() + "-" + selectedDate.getDate()
       };
       console.log(newAssignment.dueDate)
       await axios.post('http://127.0.0.1:8000/create-assignment', newAssignment)
       setNewAssignmentTitle('');
       setNewAssignmentDescription('');
       setSelectedDate(null);
+      const backendAssignments = await axios.get('http://127.0.0.1:8000/get-assignments')
+      setAssignments(backendAssignments.data)
     }
   };
 
