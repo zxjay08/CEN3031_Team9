@@ -50,6 +50,7 @@ import {
   dashboard24HoursPerformanceChart,
 } from "variables/charts.js";
 
+// Teacher trends dashboard view
 function Dashboard2() {
   return (
     <>

@@ -51,6 +51,7 @@ import {
   dashboard24HoursPerformanceChart,
 } from "variables/charts.js";
 
+// Secretary trends dashboard view
 function Dashboard() {
   return (
     <>

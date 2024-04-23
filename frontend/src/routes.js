@@ -29,6 +29,7 @@ import Chat from "views/Chat.js"
 
 var dashRoutes = [
   {
+    // Login page
     path: "/login",
     name: "Log-In",
     icon: "gestures_tap-01",
@@ -36,6 +37,7 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    // User page
     path: "/user-page",
     name: "Student Profile",
     icon: "users_single-02",
@@ -43,6 +45,7 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    // Notifications page
     path: "/notifications",
     name: "Assignment Calendar",
     icon: "ui-1_calendar-60",
@@ -50,6 +53,7 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    // Chat page
     path: "/chat",
     name: "Chat",
     icon: "design_vector",
@@ -57,6 +61,7 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    // Award view page
     path: "/awardview",
     name: "Award View",
     icon: "sport_trophy",
@@ -64,6 +69,7 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    // Secretary trends page
     path: "/dashboard",
     name: "Secretary Trends",
     icon: "media-2_sound-wave",
@@ -71,6 +77,7 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    // Teacher trends page
     path: "/dashboard2",
     name: "Teacher Trends",
     icon: "media-2_sound-wave",
@@ -78,12 +85,14 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
+    // Teacher contact information page (for parents)
     path: "/extended-tables",
     name: "Contact Information",
     icon: "ui-1_bell-53",
     component: <TableList />,
     layout: "/admin",
   },
+    // Unused
   // {
   //   path: "/icons",
   //   name: "Icons",

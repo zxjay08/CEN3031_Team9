@@ -56,6 +56,7 @@ const initialStudents = [
     ]},
   ];
 
+// Award view function. Shows awards HTML
 function AwardView() {
   const [selectedStudent, setSelectedStudent] = useState(null);
 

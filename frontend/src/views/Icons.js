@@ -25,6 +25,7 @@ import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
 import icons from "variables/icons";
 
+// Loads general icons required for site
 function Icons() {
   return (
     <>
@@ -34,9 +35,9 @@ function Icons() {
           <Col md={12}>
             <Card>
               <CardHeader>
-                <h5 className="title">100 Awesome Nucleo Icons</h5>
+                <h5 className="title">100 Nucleo Icons</h5>
                 <p className="category">
-                  Handcrafted by our friends from{" "}
+                  Handcrafted by{" "}
                   <a href="https://nucleoapp.com/?ref=1712">NucleoApp</a>
                 </p>
               </CardHeader>

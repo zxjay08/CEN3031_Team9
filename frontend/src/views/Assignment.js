@@ -14,11 +14,13 @@ import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import Calendar from 'react-calendar';
 import "assets/css/demo.css";
 
+
+// Shows a single assignment
 function AssignmentDetails({ assignment }) {
   if (!assignment) {
-    return null;
+    return null;  // Fail if the assignment does not exist
   }
-
+  // Return information inside the assignment
   return (
     <Card>
       <CardHeader>
@@ -35,7 +37,9 @@ function AssignmentDetails({ assignment }) {
   );
 }
 
+// Assignments view handler
 function User() {
+  // Include 2 basic assignments
   const [assignments, setAssignments] = useState([
     { id: 1, title: "Assignment 1", description: "Description for Assignment 1", dueDate: new Date("2024-04-10") },
     { id: 2, title: "Assignment 2", description: "Description for Assignment 2", dueDate: new Date("2024-04-15") },
@@ -45,6 +49,7 @@ function User() {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
+  // Show information upon clicking the assignment
   const handleAssignmentClick = (date) => {
   const assignmentForDate = assignments.find((assignment) => {
     const assignmentDate = new Date(assignment.dueDate);
@@ -57,6 +62,7 @@ function User() {
   setSelectedAssignment(assignmentForDate || null);
 };
 
+  // Handler that creates assignments
   const handleAssignmentRegistration = () => {
     if (newAssignmentTitle.trim() !== '') {
       const newAssignment = {
@@ -90,6 +96,7 @@ function User() {
                       const hasAssignment = assignments.some((assignment) => {
                       const assignmentDate = new Date(assignment.dueDate);
                       return (
+                          // Show assignment information
                         assignmentDate.getFullYear() === date.getFullYear() &&
                         assignmentDate.getMonth() === date.getMonth() &&
                         assignmentDate.getDate() === date.getDate()

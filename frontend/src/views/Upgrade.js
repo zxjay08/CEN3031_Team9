@@ -32,6 +32,7 @@ import {
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
+// Currently unused
 function Upgrade() {
   return (
     <>
