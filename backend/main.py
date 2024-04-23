@@ -10,10 +10,9 @@ import cx_Oracle
 app = FastAPI()
 
 # Enable CORS (Cross-Origin Resource Sharing) to allow requests from the React frontend
-# Replace the origin URL with the URL of the React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Update with the React app's URL
+    allow_origins=["http://localhost:3000"],  # This backend runs on port 3000
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
@@ -27,6 +26,7 @@ scholarship_trends = [
 ]
 
 
+# Get request for our trends data. Returns trend data.
 @app.get("/api/scholarship/trends")
 async def get_scholarship_trends():
     return scholarship_trends
@@ -38,6 +38,7 @@ connection = oracledb.connect(user="bernardor96", password="uBWuX2hBy8rFHXmO7CLn
 cursor = connection.cursor()
 
 print("Successfully connected to Oracle Database")
+
 
 # Class for general user information
 class User(BaseModel):
@@ -55,18 +56,19 @@ class User(BaseModel):
     password: str
 
 
+# Class for login model (only the username, password and userType are required to login)
 class UserLogin(BaseModel):
     username: str
     password: str
     userType: str
 
 
-# POST 요청을 처리하는 메서드
+# Method to handle POST request
 # Used to save information about a user
 @app.post("/save-data")
 async def save_data(user: User):
     try:
-        # SQL 쿼리 실행
+        # Execute SQL query
         cursor.execute("""
             INSERT INTO users2 (user_type, major, username, email, first_name, last_name, address, city, country, postal_code, about_student, password)
             VALUES (:user_type, :major, :username, :email, :first_name, :last_name, :address, :city, :country, :postal_code, :about_student, :password)
@@ -85,28 +87,28 @@ async def save_data(user: User):
             'password': user.password
         })
 
-        # 커밋
+        # Commit
         connection.commit()
 
-        # 저장된 데이터를 반환 (실제로는 반환하지 않아도 됨)
+        # Return that the data was saved successfully (returning data not required)
         return {"message": "Data saved successfully"}
     except Exception as e:
-        # 오류 발생 시 롤백하고 로그를 출력
+        # Rollback and output log when error occurs
         connection.rollback()
         print(e)
         return {"message": "Error occurred while saving data"}
 
 
-
+# Post request login function (used by login.js login page)
 @app.post("/login")
 async def login(user_data: UserLogin):
     username = user_data.username
     password = user_data.password
     user_type = user_data.userType
 
-# Used to query whether a user login is correct
+    # Used to query whether a user login is correct
     try:
-        # Check if the user exists in the database
+        # Execute SQL query. Check if the user exists in the database
         cursor.execute("""
             SELECT COUNT(*) FROM users2 
             WHERE username = :username AND password = :password AND user_type = :user_type
@@ -117,25 +119,26 @@ async def login(user_data: UserLogin):
         })
         result = cursor.fetchone()
 
-        if result[0] > 0:
+        if result[0] > 0:  # Returns authenticated=true if there exists a user with the given credentials
             authenticated = True
-        else:
+        else:  # Returns authenticated=false otherwise
             authenticated = False
 
         return {"authenticated": authenticated}
 
     except Exception as e:
         print(e)
-        return {"authenticated": False}
+        return {"authenticated": False}  # Return authenticated=false for safety if an exception occurs
 
 
+# Shutdown server on shutdown request
 @app.on_event("shutdown")
 def shutdown_event():
     connection.close()
 
 
 # def addUser(email, password, typeid):
-#     #first, get number of rows to determine next ID
+#     # First, get number of rows to determine next ID
 #     query = "SELECT MAX(userID) FROM USERS"
 #     cursor.execute(query)
 #     result = cursor.fetchone()
@@ -410,7 +413,7 @@ def shutdown_event():
 #                     perYear[year] = row["Cost"]
 #     return perYear
 #
-# #Calculates gpa per month for specific student
+# # Calculates gpa per month for specific student
 # def calculateMonthlyGPAs(studentid):
 #     query = """SELECT studentID, extract(year from completedate), extract(month from completedate), AVG(grade)
 #     FROM GRADES
